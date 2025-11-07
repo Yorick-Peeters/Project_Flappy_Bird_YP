@@ -6,11 +6,16 @@ public class Pipes : MonoBehaviour
     public float speed = 5;
 
     private float leftBound;
+    private Camera mainCamera;
 
     private void Start()
     {
-        // Calculate the left boundary based on the camera view
-        leftBound = Camera.main.ScreenToWorldPoint(Vector3.zero).x - 1f;
+        // Cache Camera.main (costly) and calculate the left boundary based on the camera view
+        mainCamera = Camera.main;
+        if (mainCamera != null)
+            leftBound = mainCamera.ScreenToWorldPoint(Vector3.zero).x - 1f;
+        else
+            leftBound = -10f; // fallback
     }
 
     // Update is called once per frame
@@ -22,7 +27,15 @@ public class Pipes : MonoBehaviour
         // Destroy the pipes if they go out of bounds
         if (transform.position.x < leftBound)
         {
-            Destroy(gameObject);
+            // Return to pool when available to avoid allocation churn; fall back to Destroy.
+            if (PipePool.Instance != null)
+            {
+                PipePool.Instance.Return(gameObject);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }

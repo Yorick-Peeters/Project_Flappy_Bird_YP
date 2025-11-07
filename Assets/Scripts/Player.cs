@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -20,6 +21,10 @@ public class Player : MonoBehaviour
 
     // Current sprite index
     private int spriteIndex = 0;
+
+    // Events to notify other systems (GameManager) about scoring and death
+    public event Action OnDeath;
+    public event Action OnScore;
 
     private void Awake()
     {
@@ -85,18 +90,13 @@ public class Player : MonoBehaviour
     {
         if (other.gameObject.tag == "Obstacle")
         {
-            var gm = UnityEngine.Object.FindFirstObjectByType<GameManager>();
-            if (gm != null)
-            {
-                gm.GameOver();
-            }
-        } else if (other.gameObject.tag == "Scoring")
+            // Notify subscribers that the player died
+            OnDeath?.Invoke();
+        }
+        else if (other.gameObject.tag == "Scoring")
         {
-            var gm = UnityEngine.Object.FindFirstObjectByType<GameManager>();
-            if (gm != null)
-            {
-                gm.IncreaseScore();
-            }
+            // Notify subscribers that the player scored
+            OnScore?.Invoke();
         }
     }
 }

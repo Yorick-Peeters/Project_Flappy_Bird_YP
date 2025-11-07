@@ -22,9 +22,26 @@ public class PipeSpawner : MonoBehaviour
         CancelInvoke(nameof(SpawnPipe));
     }
 
-    private void SpawnPipe()
+    // Made public so it can be called from tests and so pooled-spawn can be reused elsewhere.
+    public GameObject SpawnPipe()
     {
-        GameObject pipes = Instantiate(prefab, transform.position, Quaternion.identity);
-        pipes.transform.position += Vector3.up * Random.Range(minHeight, maxHeight);
+        GameObject pipes = null;
+
+        if (PipePool.Instance != null)
+        {
+            pipes = PipePool.Instance.Get(prefab);
+        }
+        else
+        {
+            pipes = Instantiate(prefab, transform.position, Quaternion.identity);
+        }
+
+        if (pipes != null)
+        {
+            pipes.transform.position = transform.position + Vector3.up * Random.Range(minHeight, maxHeight);
+            pipes.SetActive(true);
+        }
+
+        return pipes;
     }
 }
