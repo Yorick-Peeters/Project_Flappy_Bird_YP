@@ -8,9 +8,13 @@ public class GameManager : MonoBehaviour
 
     // Player's score
     private int score = 0;
+    // Highest score achieved (persistent)
+    private int highScore = 0;
 
     // UI Text element to display the score
     public Text scoreText;
+    // UI Text element to display the high score
+    public Text highScoreText;
 
     // UI elements for play button and game over screen
     public GameObject play;
@@ -33,7 +37,12 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        Application.targetFrameRate = 120;
+        Application.targetFrameRate = 60;
+        // Load saved high score
+        highScore = PlayerPrefs.GetInt("HighScore", 0);
+        if (highScoreText != null)
+            highScoreText.text = "High Score: " + highScore.ToString();
+
         PauseGame();
     }
     private void OnEnable()
@@ -60,8 +69,12 @@ public class GameManager : MonoBehaviour
         // Reset score and UI
         score = 0;
         scoreText.text = score.ToString();
+        // Ensure high score UI shows current stored high score
+        if (highScoreText != null)
+            highScoreText.text = "High Score: " + highScore.ToString();
         Time.timeScale = 1f;
-        player.enabled = true;
+        if (player != null)
+            player.enabled = true;
         play.SetActive(false);
         gameOver.SetActive(false);
 
@@ -86,7 +99,8 @@ public class GameManager : MonoBehaviour
     {
         // Pause the game
         Time.timeScale = 0f;
-        player.enabled = false;
+        if (player != null)
+            player.enabled = false;
         
     }
     
@@ -96,6 +110,10 @@ public class GameManager : MonoBehaviour
         gameOver.SetActive(true);
         play.SetActive(true);
 
+        // Update high score UI when game ends
+        if (highScoreText != null)
+            highScoreText.text = "High Score: " + highScore.ToString();
+
         PauseGame();
     }
 
@@ -104,5 +122,16 @@ public class GameManager : MonoBehaviour
         // Increment score and update UI
         score++;
         scoreText.text = score.ToString();
+
+        // If we beat the high score, update and persist it
+        if (score > highScore)
+        {
+            highScore = score;
+            PlayerPrefs.SetInt("HighScore", highScore);
+            PlayerPrefs.Save();
+            if (highScoreText != null)
+                highScoreText.text = "High Score: " + highScore.ToString();
+        }
     }
+
 }

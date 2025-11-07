@@ -5,28 +5,31 @@ using UnityEngine.UI;
 // Simple EditMode unit test for GameManager.IncreaseScore
 public class GameManagerTests
 {
-    // Test that IncreaseScore correctly increments the score and updates the scoreText
     [Test]
-    public void IncreaseScore_UpdatesText()
+    public void IncreaseScore_IncrementsScoreAndUpdatesUI()
     {
         // Arrange
-        var go = new GameObject("GM");
-        var gm = go.AddComponent<GameManager>();
+        var gameManagerGo = new GameObject("GameManager");
+        var gameManager = gameManagerGo.AddComponent<GameManager>();
 
-        var textGo = new GameObject("ScoreText");
-        var text = textGo.AddComponent<Text>();
-        // assign a default font to avoid null warnings in editor tests
-        text.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
-        gm.scoreText = text;
+        var scoreTextGo = new GameObject("ScoreText");
+        var scoreText = scoreTextGo.AddComponent<Text>();
+        gameManager.scoreText = scoreText;
+
+        // Provide a dummy Player so Awake()/PauseGame() don't cause NullReferenceException
+        var playerGo = new GameObject("Player");
+        var player = playerGo.AddComponent<Player>();
+        gameManager.player = player;
 
         // Act
-        gm.IncreaseScore();
+        gameManager.IncreaseScore();
 
         // Assert
-        Assert.AreEqual("1", gm.scoreText.text);
+        Assert.AreEqual("1", scoreText.text);
 
-        // cleanup
-        Object.DestroyImmediate(go);
-        Object.DestroyImmediate(textGo);
+        // Cleanup
+        Object.DestroyImmediate(gameManagerGo);
+        Object.DestroyImmediate(scoreTextGo);
+        Object.DestroyImmediate(playerGo);
     }
 }
