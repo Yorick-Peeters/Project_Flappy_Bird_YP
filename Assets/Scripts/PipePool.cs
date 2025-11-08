@@ -22,15 +22,18 @@ public class PipePool : MonoBehaviour
 
     public GameObject Get(GameObject prefab)
     {
+        // Null check
         if (prefab == null)
             return null;
 
+        // Check if we have a pool for this prefab
         if (!pools.TryGetValue(prefab, out var queue))
         {
             queue = new Queue<GameObject>();
             pools[prefab] = queue;
         }
 
+        // Return an existing object if available
         if (queue.Count > 0)
         {
             var go = queue.Dequeue();
@@ -38,6 +41,7 @@ public class PipePool : MonoBehaviour
             return go;
         }
 
+        // Otherwise, instantiate a new one
         var newGo = Instantiate(prefab);
         var pooled = newGo.GetComponent<PooledObject>();
         if (pooled == null)
