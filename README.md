@@ -10,7 +10,7 @@ How to build & run
 
 Running tests
  - Open Unity Test Runner (Window -> General -> Test Runner).
- - Run EditMode tests (the test added: `GameManagerTests`) to check the score increment behavior.
+ - Run EditMode tests to check the score increment behavior.
 
 Implemented patterns and notes
  - Observer (events): `Player` now exposes `OnDeath` and `OnScore` events; `GameManager` subscribes and unsubscribes. This decouples player and manager.
