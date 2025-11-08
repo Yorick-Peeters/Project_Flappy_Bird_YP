@@ -11,3 +11,5 @@ How to build & run
 Running tests
  - Open Unity Test Runner (Window -> General -> Test Runner).
  - Run EditMode tests to check the score increment behavior.
+
+Link to Github Repo: https://github.com/Yorick-Peeters/Project_Flappy_Bird_YP 
