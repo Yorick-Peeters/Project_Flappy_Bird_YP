@@ -2,10 +2,8 @@
 
 This is a small Flappy Bird-like Unity project implemented in C# for the Advanced C# Programming course.
 
-How to build & run
- - Open the folder in Unity (Unity Editor 2021.3+ recommended).
- - Make sure the Unity UI package is available (project already contains UI usage).
- - Open the `Assets/Scenes` scene you want to run, or open the `SampleScene` if provided.
+How to build & run (WORKS ONLY IN Unity, Unity Editor 2021.3+ recommended)
+ - Open the `Assets/Scenes/Flappy_Bird` scene to run the program in Unity.
  - Enter Play mode in the Unity Editor to run the game.
 
 Running tests
