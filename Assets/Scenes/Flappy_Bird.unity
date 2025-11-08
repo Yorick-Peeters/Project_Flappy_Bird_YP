@@ -402,7 +402,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   scoreText: {fileID: 706145060}
-  highScoreText: {fileID: 0}
+  highScoreText: {fileID: 69441597}
   play: {fileID: 1559129027}
   gameOver: {fileID: 836784799}
   player: {fileID: 248021968}
